@@ -1,6 +1,15 @@
 # Example file showing a circle moving on screen
 import pygame
 
+class Game:
+    def __init__(self):
+        # class initialization
+        pass
+    def run(self):
+        # run other code
+        pass
+
+    
 def main():
     # pygame setup
     pygame.init()
