@@ -4,48 +4,45 @@ import pygame
 class Game:
     def __init__(self):
         # class initialization
-        pass
+        pygame.init()
+        self.screen = pygame.display.set_mode((600, 400))
+        self.clock = pygame.time.Clock()
+        self.running = True
+        self.dt = 0
+        self.player_pos = pygame.Vector2(self.screen.get_width() / 2, self.screen.get_height() / 2)
+
     def run(self):
-        # run other code
-        pass
+        # run other code 
+        while self.running:
+            # poll for events
+            # pygame.QUIT event means the user clicked X to close your window
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
 
-    
-def main():
-    # pygame setup
-    pygame.init()
-    screen = pygame.display.set_mode((1280, 720))
-    clock = pygame.time.Clock()
-    running = True
-    dt = 0
+            # fill the screen with a color to wipe away anything from last frame
+            self.screen.fill("grey")
 
-    player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+            pygame.draw.circle(self.screen, "black", self.player_pos, 20)
 
-    while running:
-        # poll for events
-        # pygame.QUIT event means the user clicked X to close your window
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_w]:
+                self.player_pos.y -= 300 * self.dt
+            if keys[pygame.K_s]:
+                self.player_pos.y += 300 * self.dt
+            if keys[pygame.K_a]:
+                self.player_pos.x -= 300 * self.dt
+            if keys[pygame.K_d]:
+                self.player_pos.x += 300 * self.dt
 
-        # fill the screen with a color to wipe away anything from last frame
-        screen.fill("grey")
+            # flip() the display to put your work on screen
+            pygame.display.flip()
 
-        pygame.draw.circle(screen, "black", player_pos, 40)
+            # limits FPS to 60
+            # dt is delta time in seconds since last frame, used for framerate-
+            # independent physics.
+            self.dt = self.clock.tick(60) / 1000
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            player_pos.y -= 300 * dt
-        if keys[pygame.K_s]:
-            player_pos.y += 300 * dt
-        if keys[pygame.K_a]:
-            player_pos.x -= 300 * dt
-        if keys[pygame.K_d]:
-            player_pos.x += 300 * dt
-
-        # flip() the display to put your work on screen
-        pygame.display.flip()
-
-        # limits FPS to 60
-        # dt is delta time in seconds since last frame, used for framerate-
-        # independent physics.
-        dt = clock.tick(60) / 1000
+    def quit(self):
+        # quit the game
+        pygame.quit()
